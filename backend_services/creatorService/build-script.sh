@@ -1,16 +1,13 @@
 #!/bin/bash
-set -e
+set -e  # Exit immediately if a command exits with a non-zero status
 
 echo "Starting build process for creatorService..."
 
-# Navigate to the directory containing the Java source files
+# Navigate to the project directory
 cd backend_services/creatorService
 
-echo "Cleaning project..."
-rm -rf build/
-
-echo "Building project..."
-# Compile Java files from the specific path
-javac -d build src/main/java/onlypans/creatorService/*.java
+# Run Gradle build to compile the project and package it
+echo "Building project with Gradle..."
+gradle build
 
 echo "Build process completed successfully."
