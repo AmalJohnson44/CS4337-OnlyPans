@@ -16,7 +16,16 @@ java {
 
 repositories {
     mavenCentral()
+    // Add other necessary repositories if required
 }
+
+toolchainManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
