@@ -11,48 +11,33 @@ pipeline {
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
+        stage('List Root Directory') {
+            steps {
+                sh 'ls -la'  // Lists the contents of the root directory
+            }
+        }
         stage('Verify Directory Structure') {
             steps {
                 dir(WORKSPACE_DIR) {
-                    // List all files to verify that build-script.sh is present
-                    sh 'ls -la'
+                    sh 'ls -la'  // Lists files in creatorService to verify build-script.sh
                 }
             }
         }
         stage('Build') {
             steps {
                 dir(WORKSPACE_DIR) {
-                    // Ensure build-script.sh is executable and run it
                     sh 'chmod +x build-script.sh'
                     sh './build-script.sh'
-                }
-            }
-        }
-        stage('Test') {
-            steps {
-                dir(WORKSPACE_DIR) {
-                    // Add test steps or scripts here if needed
-                    sh 'echo "Running tests for creatorService..."'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                dir(WORKSPACE_DIR) {
-                    sh 'echo "Deploying creatorService..."'
                 }
             }
         }
     }
     post {
         success {
-            echo 'Build, Test, and Deployment Successful for creatorService!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Build, Test, or Deployment Failed for creatorService. Check the logs.'
-        }
-        always {
-            echo 'Pipeline for creatorService completed.'
+            echo 'Pipeline failed. Check the logs for more details.'
         }
     }
 }
