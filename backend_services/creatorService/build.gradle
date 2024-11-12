@@ -10,21 +10,13 @@ version = '1.0.0'
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
-        vendor = JvmVendorSpec.ADOPTIUM  // or use 'Oracle' or another vendor if preferred
+        vendor = JvmVendorSpec.ADOPTIUM  // Optional, specify vendor if needed
     }
 }
 
 repositories {
     mavenCentral()
-    // Add other necessary repositories if required
 }
-
-toolchainManagement {
-    repositories {
-        mavenCentral()
-    }
-}
-
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
@@ -33,13 +25,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'mysql:mysql-connector-java:8.0.32'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    //implementation project(':backend_services:common')
-    //implementation project(':backend_services:GlobalExceptions')
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-config'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-
 }
 
 dependencyManagement {
