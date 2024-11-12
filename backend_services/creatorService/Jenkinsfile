@@ -1,9 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage('Check Permissions') {
+        stage('Set Permissions') {
             steps {
-                sh 'ls -la ./gradlew'
+                sh 'chmod +x ./gradlew'
             }
         }
         stage('Build') {
