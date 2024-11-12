@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        gradle 'Gradle 7.0'  // Ensure this matches the name configured in Jenkins
+    }
     stages {
         stage('Checkout Code') {
             steps {
@@ -7,32 +10,25 @@ pipeline {
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
-        stage('Verify Workspace Structure') {
-            steps {
-                // List all files in the workspace for verification
-                sh 'ls -Rla'
-                sh 'find . -type f'
-            }
-        }
         stage('Build') {
             steps {
-                // Attempt to run the build script with different paths for flexibility
-                sh 'chmod +x build-script.sh || chmod +x */build-script.sh || chmod +x */*/build-script.sh'
-                sh './build-script.sh || ./*/build-script.sh || ./*/*/build-script.sh'
+                dir('backend_services/creatorService') {
+                    sh 'gradle build'
+                }
             }
         }
         stage('Test') {
             steps {
-                // Placeholder test step; replace with actual test script or command
-                sh 'echo "Running tests for creatorService..."'
-                // Example: sh 'mvn test' or './test-script.sh' (replace as needed)
+                dir('backend_services/creatorService') {
+                    sh 'gradle test'
+                }
             }
         }
         stage('Deploy') {
             steps {
-                // Placeholder deploy step; replace with actual deployment command or script
-                sh 'echo "Deploying creatorService..."'
-                // Example: sh './deploy-script.sh' (replace as needed)
+                dir('backend_services/creatorService') {
+                    sh 'echo "Deploying creatorService..."'
+                }
             }
         }
     }
