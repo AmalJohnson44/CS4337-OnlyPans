@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+    environment {
+       
+        SERVICE_NAME = 'creatorService'
+        WORKSPACE_DIR = "backend_services/${SERVICE_NAME}"
+    }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                
+                git branch: 'micro_service_additions',
+                    url: 'https://github.com/Caragh7/CS4337-OnlyPans.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                dir(WORKSPACE_DIR) {
+                    
+                    sh 'echo "Building the creatorService..."'
+                    sh './build-script.sh'  
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                dir(WORKSPACE_DIR) {
+                   
+                    sh 'echo "Running tests for the creatorService..."'
+                    sh './test-script.sh'  
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                dir(WORKSPACE_DIR) {
+                   
+                    sh 'echo "Deploying the creatorService..."'
+                    sh './deploy-script.sh'  
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Build, Test, and Deployment Successful for creatorService!'
+        }
+        failure {
+            echo 'Build, Test, or Deployment Failed for creatorService. Check the logs.'
+        }
+        always {
+           
+            echo 'Pipeline for creatorService completed.'
+        }
+    }
+}
