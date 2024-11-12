@@ -10,7 +10,7 @@ pipeline {
             steps {
                 
                 git branch: 'micro_service_additions',
-                    url: 'https://github.com/Caragh7/CS4337-OnlyPans.git'
+                    url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
         stage('Build') {
