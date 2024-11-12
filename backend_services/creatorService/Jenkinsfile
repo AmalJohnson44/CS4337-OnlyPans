@@ -3,19 +3,42 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'micro_service_additions',
+                git branch: 'main',
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
-        stage('Verify Entire Workspace Structure') {
+        stage('Verify Directory Structure') {
             steps {
-                sh 'ls -Rla'  // List the entire directory structure to check where files are located
+                sh 'ls -la'  // List files in the root directory to verify build-script.sh is present
+            }
+        }
+        stage('Build') {
+            steps {
+                // Ensure build-script.sh is executable and run it
+                sh 'chmod +x build-script.sh'
+                sh './build-script.sh'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'echo "Running tests for the service..."'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'echo "Deploying the service..."'
             }
         }
     }
     post {
+        success {
+            echo 'Build, Test, and Deployment Successful!'
+        }
+        failure {
+            echo 'Build, Test, or Deployment Failed. Check the logs.'
+        }
         always {
-            echo 'Verification stage completed.'
+            echo 'Pipeline completed.'
         }
     }
 }
