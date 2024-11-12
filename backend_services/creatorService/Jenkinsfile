@@ -1,10 +1,11 @@
 pipeline {
     agent any
-    environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'  // Adjust to your Java 17 path
-        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
-    }
     stages {
+        stage('Check Permissions') {
+            steps {
+                sh 'ls -la ./gradlew'
+            }
+        }
         stage('Build') {
             steps {
                 sh './gradlew build'
