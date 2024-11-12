@@ -7,26 +7,43 @@ pipeline {
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
-        stage('List All Files in Workspace') {
+        stage('Verify Workspace Structure') {
             steps {
-                sh 'ls -Rla'  // List the entire directory structure to find build-script.sh
-                sh 'find . -name "build-script.sh"'  // Locate build-script.sh
+                sh 'ls -Rla'  // Lists the directory structure for verification
+                sh 'find . -name "build-script.sh"'  // Confirms the location of build-script.sh
             }
         }
         stage('Build') {
             steps {
-                // Ensure the correct directory path is used
-                sh 'chmod +x build-script.sh || true'  // Skip if not found for debugging
-                sh './build-script.sh || echo "build-script.sh not found"'
+                // Ensure build-script.sh is executable and run it
+                sh 'chmod +x build-script.sh'
+                sh './build-script.sh'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Add your test commands or script here
+                sh 'echo "Running tests for the service..."'
+                // Example: sh './test-script.sh' (replace with actual test script if available)
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Add your deployment commands or script here
+                sh 'echo "Deploying the service..."'
+                // Example: sh './deploy-script.sh' (replace with actual deploy script if available)
             }
         }
     }
     post {
         success {
-            echo 'Build successful!'
+            echo 'Build, Test, and Deployment Successful!'
         }
         failure {
-            echo 'Build failed. Check the logs for details.'
+            echo 'Build, Test, or Deployment Failed. Check the logs for details.'
+        }
+        always {
+            echo 'Pipeline completed.'
         }
     }
 }
