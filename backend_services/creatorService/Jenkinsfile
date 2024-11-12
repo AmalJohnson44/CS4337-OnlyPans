@@ -1,7 +1,8 @@
 pipeline {
     agent any
     tools {
-        gradle 'Gradle 7.0'  // Ensure this matches the name configured in Jenkins
+        // Specify Gradle or Maven if configured in Jenkins; adjust the name as needed
+        gradle 'Gradle 8.0'  // If you prefer Maven, use 'Maven 3.8.1'
     }
     stages {
         stage('Checkout Code') {
@@ -13,34 +14,39 @@ pipeline {
         stage('Build') {
             steps {
                 dir('backend_services/creatorService') {
-                    sh 'gradle build'
+                    // Build the project using Gradle or Maven
+                    sh './gradlew build'  // Replace with 'mvn clean package' if using Maven
                 }
             }
         }
         stage('Test') {
             steps {
                 dir('backend_services/creatorService') {
-                    sh 'gradle test'
+                    // Run tests using Gradle or Maven
+                   // sh './gradlew test'  // Replace with 'mvn test' if using Maven
                 }
             }
         }
         stage('Deploy') {
             steps {
                 dir('backend_services/creatorService') {
-                    sh 'echo "Deploying creatorService..."'
+                    // Custom deploy logic; replace with your own deployment steps
+                    sh 'echo "Deploying CreatorServiceApplication..."'
+                    // Example: Copy JAR file to a deployment directory or server
+                    //sh 'cp build/libs/creatorService-1.0.0.jar /path/to/deployment/directory/'  // Update path as needed
                 }
             }
         }
     }
     post {
         success {
-            echo 'Build, Test, and Deployment Successful for creatorService!'
+            echo 'Build, Test, and Deployment Successful for CreatorServiceApplication!'
         }
         failure {
-            echo 'Build, Test, or Deployment Failed for creatorService. Check the logs for details.'
+            echo 'Build, Test, or Deployment Failed. Check the logs for details.'
         }
         always {
-            echo 'Pipeline for creatorService completed.'
+            echo 'Pipeline for CreatorServiceApplication completed.'
         }
     }
 }
