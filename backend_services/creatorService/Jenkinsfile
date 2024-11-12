@@ -1,13 +1,18 @@
 pipeline {
     agent any
     environment {
-        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home' // Replace with the actual path to Java 19
+        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home' // Your specific Java 19 path
         PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
     stages {
         stage('Check Java Version') {
             steps {
                 sh 'java -version'
+            }
+        }
+        stage('Verify Gradle Toolchains') {
+            steps {
+                sh 'gradle -q javaToolchains'
             }
         }
         stage('Set Permissions') {
