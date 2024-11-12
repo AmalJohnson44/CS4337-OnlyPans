@@ -7,43 +7,27 @@ pipeline {
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
-        stage('Verify Workspace Structure') {
+        stage('List All Files in Workspace') {
             steps {
-                sh 'ls -Rla'  // Lists the directory structure for verification
-                sh 'find . -name "build-script.sh"'  // Confirms the location of build-script.sh
+                // Print the full directory structure to check where build-script.sh is located
+                sh 'ls -Rla'
+                sh 'find . -type f'
             }
         }
         stage('Build') {
             steps {
-                // Ensure build-script.sh is executable and run it
-                sh 'chmod +x build-script.sh'
-                sh './build-script.sh'
-            }
-        }
-        stage('Test') {
-            steps {
-                // Add your test commands or script here
-                sh 'echo "Running tests for the service..."'
-                // Example: sh './test-script.sh' (replace with actual test script if available)
-            }
-        }
-        stage('Deploy') {
-            steps {
-                // Add your deployment commands or script here
-                sh 'echo "Deploying the service..."'
-                // Example: sh './deploy-script.sh' (replace with actual deploy script if available)
+                // Attempt to run the build script with different paths for debugging
+                sh 'chmod +x build-script.sh || chmod +x */build-script.sh || chmod +x */*/build-script.sh'
+                sh './build-script.sh || ./*/build-script.sh || ./*/*/build-script.sh'
             }
         }
     }
     post {
         success {
-            echo 'Build, Test, and Deployment Successful!'
+            echo 'Build successful!'
         }
         failure {
-            echo 'Build, Test, or Deployment Failed. Check the logs for details.'
-        }
-        always {
-            echo 'Pipeline completed.'
+            echo 'Build failed. Check the logs for details.'
         }
     }
 }
