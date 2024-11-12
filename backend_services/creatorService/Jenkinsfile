@@ -15,7 +15,7 @@ pipeline {
             steps {
                 dir('backend_services/creatorService') {
                     // Build the project using Gradle or Maven
-                    sh './gradlew build'  // Replace with 'mvn clean package' if using Maven
+                    sh './gradle build'  // Replace with 'mvn clean package' if using Maven
                 }
             }
         }
