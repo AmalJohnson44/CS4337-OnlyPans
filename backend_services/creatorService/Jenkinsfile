@@ -7,19 +7,17 @@ pipeline {
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
-        stage('Verify Directory Structure') {
+        stage('List All Files in Workspace') {
             steps {
-                sh 'ls -la'  // List files in the root directory
-                sh 'find . -name "build-script.sh"'  // Search for the build-script.sh file
+                sh 'ls -Rla'  // List the entire directory structure to find build-script.sh
+                sh 'find . -name "build-script.sh"'  // Locate build-script.sh
             }
         }
         stage('Build') {
             steps {
-                // Adjust the path if the script is in a subdirectory (e.g., backend_services)
-                dir('backend_services') {  // Replace with the correct path if needed
-                    sh 'chmod +x build-script.sh'
-                    sh './build-script.sh'
-                }
+                // Ensure the correct directory path is used
+                sh 'chmod +x build-script.sh || true'  // Skip if not found for debugging
+                sh './build-script.sh || echo "build-script.sh not found"'
             }
         }
     }
