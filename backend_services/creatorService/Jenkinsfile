@@ -1,47 +1,14 @@
 pipeline {
     agent any
-    tools {
-        gradle 'Gradle 8.0'  // Use the name you configured in Jenkins' Global Tool Configuration
+    environment {
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk'  // Adjust to your Java 17 path
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
     stages {
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
-            }
-        }
         stage('Build') {
             steps {
-                dir('backend_services/creatorService') {
-                    // Use the installed Gradle to build the project
-                    sh 'gradle build'  // Replace with 'gradle build' for global Gradle installation
-                }
+                sh './gradlew build'
             }
-        }
-        stage('Test') {
-            steps {
-                dir('backend_services/creatorService') {
-                    // Run tests using Gradle
-                    sh 'gradle test'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                dir('backend_services/creatorService') {
-                    sh 'echo "Deploying CreatorServiceApplication..."'
-                    // Custom deployment logic (adjust the path as needed)
-                    sh 'cp build/libs/creatorService-1.0.0.jar /path/to/deployment/directory/'
-                }
-            }
-        }
-    }
-    post {
-        success {
-            echo 'Build, Test, and Deployment Successful for creatorService!'
-        }
-        failure {
-            echo 'Build, Test, or Deployment Failed for creatorService. Check the logs for details.'
         }
     }
 }
