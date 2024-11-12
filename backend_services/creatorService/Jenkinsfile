@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    environment {
-        SERVICE_NAME = 'creatorService'
-        WORKSPACE_DIR = "backend_services/${SERVICE_NAME}"
-    }
     stages {
         stage('Checkout Code') {
             steps {
@@ -11,33 +7,40 @@ pipeline {
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
-        stage('List Root Directory') {
-            steps {
-                sh 'ls -la'  // Lists the contents of the root directory
-            }
-        }
         stage('Verify Directory Structure') {
             steps {
-                dir(WORKSPACE_DIR) {
-                    sh 'ls -la'  // Lists files in creatorService to verify build-script.sh
-                }
+                sh 'ls -la'  // List files in the root directory to verify build-script.sh is present
             }
         }
         stage('Build') {
             steps {
-                dir(WORKSPACE_DIR) {
-                    sh 'chmod +x build-script.sh'
-                    sh './build-script.sh'
-                }
+                // Ensure build-script.sh is executable and run it
+                sh 'chmod +x build-script.sh'
+                sh './build-script.sh'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Add your test steps here if needed
+                sh 'echo "Running tests for the service..."'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Add your deployment steps here if needed
+                sh 'echo "Deploying the service..."'
             }
         }
     }
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Build, Test, and Deployment Successful!'
         }
         failure {
-            echo 'Pipeline failed. Check the logs for more details.'
+            echo 'Build, Test, or Deployment Failed. Check the logs.'
+        }
+        always {
+            echo 'Pipeline completed.'
         }
     }
 }
