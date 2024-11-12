@@ -15,7 +15,7 @@ pipeline {
             steps {
                 dir('backend_services/creatorService') {
                     // Build the project using Gradle or Maven
-                    sh './gradle build'  // Replace with 'mvn clean package' if using Maven
+                    bat './gradle build'  // Replace with 'mvn clean package' if using Maven
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 dir('backend_services/creatorService') {
                     // Run tests using Gradle or Maven
-                   // sh './gradlew test'  // Replace with 'mvn test' if using Maven
+                   // bat './gradlew test'  // Replace with 'mvn test' if using Maven
                 }
             }
         }
@@ -31,9 +31,9 @@ pipeline {
             steps {
                 dir('backend_services/creatorService') {
                     // Custom deploy logic; replace with your own deployment steps
-                    sh 'echo "Deploying CreatorServiceApplication..."'
+                    bat 'echo "Deploying CreatorServiceApplication..."'
                     // Example: Copy JAR file to a deployment directory or server
-                    //sh 'cp build/libs/creatorService-1.0.0.jar /path/to/deployment/directory/'  // Update path as needed
+                    //bat 'cp build/libs/creatorService-1.0.0.jar /path/to/deployment/directory/'  // Update path as needed
                 }
             }
         }
