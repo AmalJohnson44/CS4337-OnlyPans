@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    tools {
-        // Specify Gradle or Maven if configured in Jenkins; adjust the name as needed
-        gradle 'Gradle 8.0'  // If you prefer Maven, use 'Maven 3.8.1'
-    }
     stages {
         stage('Checkout Code') {
             steps {
@@ -14,39 +10,35 @@ pipeline {
         stage('Build') {
             steps {
                 dir('backend_services/creatorService') {
-                    // Build the project using Gradle or Maven
-                    bat './gradle build'  // Replace with 'mvn clean package' if using Maven
+                    // Use the Gradle wrapper to build the project
+                    sh './gradlew build'
                 }
             }
         }
         stage('Test') {
             steps {
                 dir('backend_services/creatorService') {
-                    // Run tests using Gradle or Maven
-                   // bat './gradlew test'  // Replace with 'mvn test' if using Maven
+                    // Run tests using the Gradle wrapper
+                    sh './gradlew test'
                 }
             }
         }
         stage('Deploy') {
             steps {
                 dir('backend_services/creatorService') {
-                    // Custom deploy logic; replace with your own deployment steps
-                    bat 'echo "Deploying CreatorServiceApplication..."'
-                    // Example: Copy JAR file to a deployment directory or server
-                    //bat 'cp build/libs/creatorService-1.0.0.jar /path/to/deployment/directory/'  // Update path as needed
+                    sh 'echo "Deploying CreatorServiceApplication..."'
+                    // Copy the built JAR to a deployment directory (adjust the path as needed)
+                    sh 'cp build/libs/creatorService-1.0.0.jar /path/to/deployment/directory/'
                 }
             }
         }
     }
     post {
         success {
-            echo 'Build, Test, and Deployment Successful for CreatorServiceApplication!'
+            echo 'Build, Test, and Deployment Successful for creatorService!'
         }
         failure {
-            echo 'Build, Test, or Deployment Failed. Check the logs for details.'
-        }
-        always {
-            echo 'Pipeline for CreatorServiceApplication completed.'
+            echo 'Build, Test, or Deployment Failed for creatorService. Check the logs for details.'
         }
     }
 }
