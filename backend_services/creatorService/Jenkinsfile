@@ -9,36 +9,26 @@ pipeline {
         }
         stage('Verify Directory Structure') {
             steps {
-                sh 'ls -la'  // List files in the root directory to verify build-script.sh is present
+                sh 'ls -la'  // List files in the root directory
+                sh 'find . -name "build-script.sh"'  // Search for the build-script.sh file
             }
         }
         stage('Build') {
             steps {
-                // Ensure build-script.sh is executable and run it
-                sh 'chmod +x build-script.sh'
-                sh './build-script.sh'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'echo "Running tests for the service..."'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'echo "Deploying the service..."'
+                // Adjust the path if the script is in a subdirectory (e.g., backend_services)
+                dir('backend_services') {  // Replace with the correct path if needed
+                    sh 'chmod +x build-script.sh'
+                    sh './build-script.sh'
+                }
             }
         }
     }
     post {
         success {
-            echo 'Build, Test, and Deployment Successful!'
+            echo 'Build successful!'
         }
         failure {
-            echo 'Build, Test, or Deployment Failed. Check the logs.'
-        }
-        always {
-            echo 'Pipeline completed.'
+            echo 'Build failed. Check the logs for details.'
         }
     }
 }
