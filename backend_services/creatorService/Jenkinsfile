@@ -11,12 +11,19 @@ pipeline {
                     url: 'https://github.com/AmalJohnson44/CS4337-OnlyPans.git'
             }
         }
+        stage('Verify Directory Structure') {
+            steps {
+                dir(WORKSPACE_DIR) {
+                    // List all files to verify that build-script.sh is present
+                    sh 'ls -la'
+                }
+            }
+        }
         stage('Build') {
             steps {
                 dir(WORKSPACE_DIR) {
-                    // Ensure the script is executable
+                    // Ensure build-script.sh is executable and run it
                     sh 'chmod +x build-script.sh'
-                    // Run the build script
                     sh './build-script.sh'
                 }
             }
