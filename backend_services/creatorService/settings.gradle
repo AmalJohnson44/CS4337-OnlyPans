@@ -2,4 +2,6 @@ rootProject.name = 'creatorService'
 include 'authService'
 plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+    id 'org.springframework.boot' version '3.3.4' // Replace with the latest version found online
+    id 'io.spring.dependency-management' version '1.1.6'
 }
