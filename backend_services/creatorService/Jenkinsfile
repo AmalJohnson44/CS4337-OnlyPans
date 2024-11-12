@@ -14,7 +14,10 @@ pipeline {
         stage('Build') {
             steps {
                 dir(WORKSPACE_DIR) {
-                    sh './build-script.sh'  // Calls the build script
+                    // Ensure the script is executable
+                    sh 'chmod +x build-script.sh'
+                    // Run the build script
+                    sh './build-script.sh'
                 }
             }
         }
