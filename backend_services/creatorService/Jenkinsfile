@@ -1,29 +1,48 @@
 pipeline {
     agent any
-    environment {
-        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home' // Your specific Java 19 path
-        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
-    }
+
     stages {
-        stage('Check Java Version') {
+        stage('Checkout') {
             steps {
-                sh 'java -version'
+                // Checkout the code from the repository
+                git branch: 'main', url: 'https://github.com/Caragh7/CS4337-OnlyPans.git'
             }
         }
-        stage('Verify Gradle Toolchains') {
-            steps {
-                sh 'gradle -q javaToolchains'
-            }
-        }
-        stage('Set Permissions') {
-            steps {
-                sh 'chmod +x ./gradlew'
-            }
-        }
+        
         stage('Build') {
             steps {
-                sh './gradlew build'
+                // Clean and build the project using Gradle
+                bat './gradlew clean build'
             }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests using Gradle
+                bat './gradlew test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                // Package the project (create a jar file)
+                bat './gradlew bootJar'
+            }
+        }
+
+        //stage('Deploy') {
+          //  steps {
+                // Deploy the jar file to a target server
+          //  }
+       // }
+    }
+
+    post {
+        success {
+            echo 'Build, Test, and Deployment completed successfully.'
+        }
+        failure {
+            echo 'Build, Test, or Deployment failed. Please check the logs.'
         }
     }
 }
